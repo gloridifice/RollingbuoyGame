@@ -1,10 +1,11 @@
 using System;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Game.Script
 {
-    enum RingMode
+    public enum RingMode
     {
         Sit,
         Stand
@@ -12,7 +13,9 @@ namespace Game.Script
 
     public class RingController : MonoBehaviour
     {
-        private RingMode _ringMode = RingMode.Sit;
+        public RingMode ringMode = RingMode.Sit;
+
+        private Rigidbody2D _rgBody2D;
 
         public GameObject visual;
         public GameObject standCollision;
@@ -25,6 +28,7 @@ namespace Game.Script
         private void Start()
         {
             standCollision.SetActive(false);
+            _rgBody2D = GetComponent<Rigidbody2D>();
         }
 
         private void Update()
@@ -45,7 +49,7 @@ namespace Game.Script
                 }
                 else
                 {
-                    if (_ringMode == RingMode.Sit)
+                    if (ringMode == RingMode.Sit)
                     {
                         PutItem();
                     }
@@ -61,6 +65,7 @@ namespace Game.Script
             if (catchable.gameObject.TryGetComponent(out Rigidbody2D rgRigidbody2D))
             {
                 rgRigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+                _rgBody2D.mass += rgRigidbody2D.mass;
             }
 
             if (catchable.gameObject.TryGetComponent(out Collider2D collider))
@@ -76,6 +81,7 @@ namespace Game.Script
             if (catchableItem.gameObject.TryGetComponent(out Rigidbody2D rgRigidbody2D))
             {
                 rgRigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+                _rgBody2D.mass -= rgRigidbody2D.mass;
             }
 
             if (catchableItem.gameObject.TryGetComponent(out Collider2D collider))
@@ -90,7 +96,7 @@ namespace Game.Script
 
         void ChangeRingMode()
         {
-            if (_ringMode == RingMode.Sit)
+            if (ringMode == RingMode.Sit)
                 TryStand();
             else
                 TrySit();
@@ -98,7 +104,7 @@ namespace Game.Script
 
         bool TryStand()
         {
-            _ringMode = RingMode.Stand;
+            ringMode = RingMode.Stand;
 
             var tween = visual.transform.DOLocalRotate(new Vector3(90f, 0f, 0f), 0.5f);
             tween.SetEase(Ease.InOutCubic);
@@ -109,7 +115,7 @@ namespace Game.Script
 
         bool TrySit()
         {
-            _ringMode = RingMode.Sit;
+            ringMode = RingMode.Sit;
             
             var tween = visual.transform.DOLocalRotate(new Vector3(0f, 0f, 0f), 0.5f);
             tween.SetEase(Ease.InOutCubic);
