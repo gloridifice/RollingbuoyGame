@@ -1,6 +1,7 @@
 using System;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 namespace Game.Script
@@ -43,16 +44,12 @@ namespace Game.Script
                 if (catchableItem == null)
                 {
                     if (catcherArea.GetCatchableObject() != null)
-                    {
                         CatchItem(catcherArea.GetCatchableObject());        
-                    }
                 }
                 else
                 {
                     if (ringMode == RingMode.Sit)
-                    {
                         PutItem();
-                    }
                 }
             }
         }
@@ -89,6 +86,7 @@ namespace Game.Script
                 collider.enabled = true;
             }
             
+            catchableItem.transform.SetParent(null);
             catchableItem = null;
         }
 
@@ -126,5 +124,23 @@ namespace Game.Script
 
         #endregion
 
+
+        public bool isInWater = false;
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.gameObject.TryGetComponent(out WaterArea water))
+            {
+                isInWater = true;
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            if (other.gameObject.TryGetComponent(out WaterArea water))
+            {
+                isInWater = false;
+            }
+        }
     }
 }

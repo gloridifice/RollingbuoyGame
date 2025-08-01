@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   SnapInput: 1
   VerticalDeadZoneThreshold: 0.3
   HorizontalDeadZoneThreshold: 0.1
@@ -28,5 +28,6 @@ MonoBehaviour:
   MaxFallSpeed: 40
   FallAcceleration: 110
   JumpEndEarlyGravityModifier: 3
-  CoyoteFrames: 7
-  JumpBufferFrames: 7
+  CoyoteTime: 0.15
+  JumpBuffer: 0.2
+  MaxMovableMass: 20
