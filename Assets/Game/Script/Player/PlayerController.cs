@@ -1,8 +1,8 @@
 using System;
-using Game.Script;
+using TarodevController;
 using UnityEngine;
 
-namespace TarodevController
+namespace Game.Script
 {
     /// <summary>
     /// Hey!

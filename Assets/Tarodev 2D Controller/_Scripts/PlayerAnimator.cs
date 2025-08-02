@@ -1,3 +1,4 @@
+using Game.Script;
 using UnityEngine;
 
 namespace TarodevController
