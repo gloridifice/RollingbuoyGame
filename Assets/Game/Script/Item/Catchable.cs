@@ -7,6 +7,6 @@ namespace Game.Script
     /// </summary>
     public class Catchable : MonoBehaviour
     {
-        
+        public Vector3 catchOffset = Vector3.zero;
     }
 }

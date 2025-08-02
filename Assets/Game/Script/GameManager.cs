@@ -9,7 +9,6 @@ namespace Game.Script
         public static GameManager Instance;
 
         public GameObject pWinUi;
-        public string currentSceneName;
 
         private void Awake()
         {
@@ -24,13 +23,12 @@ namespace Game.Script
             // Reload scene
             if (Input.GetKeyDown(KeyCode.R))
             {
-                SceneManager.LoadScene(currentSceneName);
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
 
         public void LoadScene(string sceneName)
         {
-            currentSceneName = sceneName;
             SceneManager.LoadScene(sceneName);
         }
 

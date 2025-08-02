@@ -19,6 +19,8 @@ namespace Game.Script
         private Rigidbody2D _rgBody2D;
 
         public GameObject visual;
+        public GameObject model;
+        public GameObject sitCollision;
         public GameObject standCollision;
         public GameObject itemCollision;
 
@@ -33,14 +35,23 @@ namespace Game.Script
         public float inWaterDamping = 2f;
         public float inAirDamping = 1f;
 
-        public float maxFloatSpeed = 10f;
-        public float floatAcc = 10f;
-        
+        public CapsuleCollider2D[] activeCapsuleCollider2D;
+
+        private CapsuleCollider2D[] _sitCollider2D;
+        private CapsuleCollider2D[] _standCollider2D;
+
+        private void Awake()
+        {
+            _sitCollider2D = sitCollision.GetComponents<CapsuleCollider2D>();
+            _standCollider2D = standCollision.GetComponents<CapsuleCollider2D>();
+        }
+
         private void Start()
         {
             _rgBody2D = GetComponent<Rigidbody2D>();
             standCollision.SetActive(false);
             itemCollision.SetActive(false);
+            activeCapsuleCollider2D = _sitCollider2D;
         }
 
         private void Update()
@@ -55,7 +66,9 @@ namespace Game.Script
                 if (catchableItem == null)
                 {
                     if (catcherArea.GetCatchableObject() != null)
+                    {
                         CatchItem(catcherArea.GetCatchableObject());        
+                    }
                 }
                 else
                 {
@@ -63,12 +76,19 @@ namespace Game.Script
                         PutItem();
                 }
             }
+
+            if (ringMode == RingMode.Stand)
+            {
+                model.transform.Rotate(Vector3.down, (float)(_rgBody2D.linearVelocity.x / 1.8 / 2 * Mathf.PI) * Mathf.Rad2Deg *
+                                                   Time.deltaTime, Space.Self);
+            }
         }
+
 
         void CatchItem(Catchable catchable)
         {
             catchable.transform.SetParent(catchPointMarker.transform);
-            catchable.transform.localPosition = Vector3.zero;
+            catchable.transform.localPosition = catchable.catchOffset;
 
             if (catchable.gameObject.TryGetComponent(out Rigidbody2D rgRigidbody2D))
             {
@@ -76,11 +96,11 @@ namespace Game.Script
                 _rgBody2D.mass += rgRigidbody2D.mass;
             }
 
-            if (catchable.gameObject.TryGetComponent(out Collider2D collider))
+            foreach (var child in catchable.GetComponentsInChildren<Collider2D>())
             {
-                collider.enabled = false;
+                child.enabled = false;
             }
-
+            
             catchableItem = catchable;
             itemCollision.SetActive(true);
         }
@@ -94,10 +114,10 @@ namespace Game.Script
                 rgRigidbody2D.bodyType = RigidbodyType2D.Dynamic;
                 _rgBody2D.mass -= rgRigidbody2D.mass;
             }
-
-            if (catchableItem.gameObject.TryGetComponent(out Collider2D collider))
+            
+            foreach (var child in catchableItem.GetComponentsInChildren<Collider2D>())
             {
-                collider.enabled = true;
+                child.enabled = true;
             }
             
             catchableItem.transform.SetParent(null);
@@ -120,7 +140,14 @@ namespace Game.Script
 
             var tween = visual.transform.DOLocalRotate(new Vector3(90f, 0f, 0f), 0.5f);
             tween.SetEase(Ease.InOutCubic);
-            standCollision.SetActive(true);
+
+            tween.OnComplete((() =>
+            {
+                activeCapsuleCollider2D = _standCollider2D;
+                sitCollision.SetActive(false);
+                standCollision.SetActive(true);
+                itemCollision.SetActive(false);
+            }));
             
             return true;
         }
@@ -128,10 +155,17 @@ namespace Game.Script
         bool TrySit()
         {
             ringMode = RingMode.Sit;
-            
+
             var tween = visual.transform.DOLocalRotate(new Vector3(0f, 0f, 0f), 0.5f);
             tween.SetEase(Ease.InOutCubic);
-            standCollision.SetActive(false);
+            tween.OnComplete((() =>
+            {
+                activeCapsuleCollider2D = _sitCollider2D;
+                standCollision.SetActive(false);
+                sitCollision.SetActive(true);
+                if (catchableItem != null)
+                    itemCollision.SetActive(true);
+            }));
             
             return true;
         }

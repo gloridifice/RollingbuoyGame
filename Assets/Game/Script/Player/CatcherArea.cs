@@ -22,7 +22,8 @@ namespace Game.Script
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.gameObject.TryGetComponent(out Catchable catchable))
+            var rb = other.attachedRigidbody;
+            if (rb != null && rb.gameObject.TryGetComponent(out Catchable catchable))
             {
                 _catchableObject = catchable;
                 onDetectCatch.Invoke(catchable);
@@ -31,7 +32,8 @@ namespace Game.Script
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            if (other.gameObject.TryGetComponent(out Catchable catchable) && catchable == _catchableObject)
+            var rb = other.attachedRigidbody;
+            if (rb != null && rb.gameObject.TryGetComponent(out Catchable catchable) && catchable == _catchableObject)
             {
                 onExitCatch.Invoke(_catchableObject);
                 _catchableObject = null;

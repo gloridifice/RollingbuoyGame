@@ -11,18 +11,20 @@ namespace Game.Script
     /// You can play and compete for best times here: https://tarodev.itch.io/extended-ultimate-2d-controller
     /// If you hve any questions or would like to brag about your score, come to discord: https://discord.gg/tarodev
     /// </summary>
-    [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
+    [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour, IPlayerController
     {
         [SerializeField] private ScriptableStats _stats;
         private Rigidbody2D _rb;
         private RingController _rc;
-        private CapsuleCollider2D _col;
         private FrameInput _frameInput;
         private Vector2 _frameVelocity;
         private bool _cachedQueryStartInColliders;
         private float _defaultMass;
         private float _massFactor;
+
+        public Transform groundRaycastOrigin;
+        public Transform ceilRaycastOrigin;
 
         #region Interface
 
@@ -38,7 +40,6 @@ namespace Game.Script
         {
             _rb = GetComponent<Rigidbody2D>();
             _rc = GetComponent<RingController>();
-            _col = GetComponent<CapsuleCollider2D>();
 
             _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
             _defaultMass = _rb.mass;
@@ -105,11 +106,18 @@ namespace Game.Script
         {
             Physics2D.queriesStartInColliders = false;
 
-            // Ground and Ceiling
-            bool groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0, Vector2.down,
-                _stats.GrounderDistance, ~_stats.PlayerLayer);
-            bool ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0, Vector2.up,
-                _stats.GrounderDistance, ~_stats.PlayerLayer);
+            bool groundHit = false;
+            bool ceilingHit = false;
+            foreach (var col in _rc.activeCapsuleCollider2D)
+            {
+                // Ground and Ceiling
+                if (!groundHit)
+                    groundHit |= Physics2D.CapsuleCast(col.bounds.center, col.size, col.direction, 0, Vector2.down,
+                        _stats.GrounderDistance, ~_stats.PlayerLayer);
+                if (!ceilingHit)
+                    ceilingHit |= Physics2D.CapsuleCast(col.bounds.center, col.size, col.direction, 0, Vector2.up,
+                        _stats.GrounderDistance, ~_stats.PlayerLayer);
+            }
 
             // Hit a Ceiling
             if (ceilingHit) _frameVelocity.y = Mathf.Min(0, _frameVelocity.y);
