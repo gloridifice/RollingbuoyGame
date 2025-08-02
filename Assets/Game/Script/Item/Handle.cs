@@ -36,8 +36,9 @@ namespace Game.Script
             twn.OnComplete(() =>
             {
                 onToggled.Invoke();
-                toggled = toggle;
             });
+            
+            toggled = toggle;
         }
 
 
