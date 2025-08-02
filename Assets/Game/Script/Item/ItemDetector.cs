@@ -32,11 +32,12 @@ namespace Game.Script
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.gameObject.TryGetComponent(out Item item))
+            if (other.attachedRigidbody == null) return;
+            if (other.attachedRigidbody.gameObject.TryGetComponent(out Item item))
             {
                 if (item.tags.Contains(validItemTag))
                 {
-                    _itemObject = other.gameObject;
+                    _itemObject = other.attachedRigidbody.gameObject;
                     _isItemInRange = true;
                 }
             }
@@ -44,7 +45,8 @@ namespace Game.Script
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            if (other.gameObject == _itemObject)
+            if (other.attachedRigidbody == null) return;
+            if (other.attachedRigidbody.gameObject == _itemObject)
             {
                 _accumulatedTime = 0f;
                 _isItemInRange = false;
