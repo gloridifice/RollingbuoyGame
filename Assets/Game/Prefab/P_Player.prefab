@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8068164802034103907}
   - component: {fileID: 5609907753190987621}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: AllVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,6 +132,229 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &1714452311506148365
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8275151385525322171}
+  - component: {fileID: 3148160413203505761}
+  - component: {fileID: 3171637687768384763}
+  - component: {fileID: 4440493347833791683}
+  m_Layer: 0
+  m_Name: OuterCatchArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8275151385525322171
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1714452311506148365}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6895183826354461993}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3148160413203505761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1714452311506148365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7ad2dec262144d0930f0b9576771a81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onDetectCatch:
+    m_PersistentCalls:
+      m_Calls: []
+  onExitCatch:
+    m_PersistentCalls:
+      m_Calls: []
+  tagsFilter: outer
+--- !u!61 &3171637687768384763
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1714452311506148365}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 2.3062606, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.86429524, y: 0.8}
+  m_EdgeRadius: 0
+--- !u!61 &4440493347833791683
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1714452311506148365}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -2.2802858, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.8032222, y: 0.8}
+  m_EdgeRadius: 0
+--- !u!1 &2156461435884592882
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1599971917154916762}
+  - component: {fileID: 4275715963232215509}
+  m_Layer: 6
+  m_Name: OuterRingCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1599971917154916762
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2156461435884592882}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6895183826354461993}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &4275715963232215509
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2156461435884592882}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.17, y: 0.8}
+  m_EdgeRadius: 0
 --- !u!1 &3360931138574568168
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,7 +366,7 @@ GameObject:
   - component: {fileID: 5785055144390518385}
   - component: {fileID: 6534825738386887382}
   - component: {fileID: 4671514601958553922}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Double Jump Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5034,7 +5257,7 @@ GameObject:
   - component: {fileID: 7438434415321874464}
   - component: {fileID: 7295372675727709126}
   - component: {fileID: 3711655559139773671}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: SitCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5140,7 +5363,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3122346207704899019}
   - component: {fileID: 635265326827215230}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: ItemCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5232,13 +5455,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4143025972892794571}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0.00074270513, y: 0.0085193105, z: 0.0009762913}
-  m_LocalScale: {x: 0.81357574, y: 0.8135757, z: 1.1512583}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0.0085193105, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5653125977291023941}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &4299017533501506923
 GameObject:
   m_ObjectHideFlags: 0
@@ -5248,7 +5471,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1710791083030877248}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Dash Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5282,7 +5505,7 @@ GameObject:
   - component: {fileID: 91331687470836029}
   - component: {fileID: 2270042259869328520}
   - component: {fileID: 6776056733594160911}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Land Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10173,7 +10396,7 @@ GameObject:
   - component: {fileID: 6212644064267283604}
   - component: {fileID: 3582291219337030693}
   - component: {fileID: 3548617659768848842}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Launch Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15064,7 +15287,7 @@ GameObject:
   - component: {fileID: 65629197513723602}
   - component: {fileID: 8652599373974966598}
   - component: {fileID: 5503481165479217206}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Jump Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19954,7 +20177,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9186398096179495318}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19993,7 +20216,7 @@ GameObject:
   - component: {fileID: 9223369080611986395}
   - component: {fileID: 4580582986980715111}
   - component: {fileID: 3151252863652693351}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Dash Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24914,7 +25137,7 @@ GameObject:
   - component: {fileID: 8567804722047604487}
   - component: {fileID: 4910415226558260712}
   - component: {fileID: 1126752890900762324}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Move Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29746,7 +29969,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8324619918034642047}
   - component: {fileID: 3769425902255739831}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: TrailRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29893,7 +30116,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5785524080725653932}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29928,8 +30151,8 @@ GameObject:
   - component: {fileID: 5114823011343517223}
   - component: {fileID: 5607531415012822365}
   - component: {fileID: 3516405917638991437}
-  m_Layer: 6
-  m_Name: CatchArea
+  m_Layer: 0
+  m_Name: InnerCatchArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30014,6 +30237,7 @@ MonoBehaviour:
   onExitCatch:
     m_PersistentCalls:
       m_Calls: []
+  tagsFilter: 
 --- !u!1 &7225884431781692011
 GameObject:
   m_ObjectHideFlags: 0
@@ -30024,7 +30248,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7962836166284267686}
   - component: {fileID: 5458000014301024431}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: StandCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30180,7 +30404,7 @@ GameObject:
   - component: {fileID: 3251143939742119879}
   - component: {fileID: 7702836916485208666}
   - component: {fileID: 7461427414776943498}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: DashRing Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35072,7 +35296,7 @@ GameObject:
   - component: {fileID: 1944168246073732613}
   - component: {fileID: 4743180643305668012}
   - component: {fileID: 1094365753809734801}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: P_Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35093,9 +35317,11 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5114823011343517223}
+  - {fileID: 8275151385525322171}
   - {fileID: 7438434415321874464}
   - {fileID: 7962836166284267686}
   - {fileID: 3122346207704899019}
+  - {fileID: 1599971917154916762}
   - {fileID: 8068164802034103907}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -35159,7 +35385,8 @@ MonoBehaviour:
   sitCollision: {fileID: 3742341937668384096}
   standCollision: {fileID: 7225884431781692011}
   itemCollision: {fileID: 4130087315198583711}
-  catcherArea: {fileID: 3516405917638991437}
+  innerCatcherArea: {fileID: 3516405917638991437}
+  outerCatcherArea: {fileID: 3148160413203505761}
   catchPointMarker: {fileID: 4143025972892794571}
   catchableItem: {fileID: 0}
   massThatCanSinkInWater: 10
@@ -35167,4 +35394,5 @@ MonoBehaviour:
   inWaterDamping: 5
   inAirDamping: 1
   activeCapsuleCollider2D: []
+  outerCatchableItem: {fileID: 0}
   isInWater: 0

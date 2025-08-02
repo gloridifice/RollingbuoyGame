@@ -24,7 +24,8 @@ namespace Game.Script
         public GameObject standCollision;
         public GameObject itemCollision;
 
-        public CatcherArea catcherArea;
+        [FormerlySerializedAs("catcherArea")] public CatcherArea innerCatcherArea;
+        public CatcherArea outerCatcherArea;
         public GameObject catchPointMarker;
 
         public Catchable catchableItem;
@@ -39,6 +40,8 @@ namespace Game.Script
 
         private CapsuleCollider2D[] _sitCollider2D;
         private CapsuleCollider2D[] _standCollider2D;
+
+        public Catchable outerCatchableItem;
 
         private void Awake()
         {
@@ -65,27 +68,54 @@ namespace Game.Script
             {
                 if (catchableItem == null)
                 {
-                    if (catcherArea.GetCatchableObject() != null)
+                    if (innerCatcherArea.GetCatchableObject() != null)
                     {
-                        CatchItem(catcherArea.GetCatchableObject());        
+                        CatchInnerItem(innerCatcherArea.GetCatchableObject());
+                    }
+                    else if (outerCatcherArea.GetCatchableObject() != null)
+                    {
+                        CatchOuterItem(outerCatcherArea.GetCatchableObject());
                     }
                 }
                 else
                 {
                     if (ringMode == RingMode.Sit)
-                        PutItem();
+                    {
+                        if (outerCatchableItem != null)
+                        {
+                            PutOuterItem();
+                        }
+                        else if (catchableItem != null)
+                        {
+                            PutItem();
+                        }
+                    }
                 }
             }
 
             if (ringMode == RingMode.Stand)
             {
-                model.transform.Rotate(Vector3.down, (float)(_rgBody2D.linearVelocity.x / 1.8 / 2 * Mathf.PI) * Mathf.Rad2Deg *
-                                                   Time.deltaTime, Space.Self);
+                model.transform.Rotate(Vector3.down, (float)(_rgBody2D.linearVelocity.x / 1.8 / 2 * Mathf.PI) *
+                                                     Mathf.Rad2Deg *
+                                                     Time.deltaTime, Space.Self);
             }
         }
 
+        void CatchOuterItem(Catchable catchable)
+        {
+            catchable.transform.SetParent(catchPointMarker.transform);
+            catchable.transform.localPosition = catchable.catchOffset;
 
-        void CatchItem(Catchable catchable)
+            if (catchable.gameObject.TryGetComponent(out Rigidbody2D rgRigidbody2D))
+            {
+                rgRigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+                _rgBody2D.mass += rgRigidbody2D.mass;
+            }
+
+            outerCatchableItem = catchable;
+        }
+
+        void CatchInnerItem(Catchable catchable)
         {
             catchable.transform.SetParent(catchPointMarker.transform);
             catchable.transform.localPosition = catchable.catchOffset;
@@ -100,28 +130,42 @@ namespace Game.Script
             {
                 child.enabled = false;
             }
-            
+
             catchableItem = catchable;
+
             itemCollision.SetActive(true);
+        }
+
+        void PutOuterItem()
+        {
+            if (outerCatchableItem.gameObject.TryGetComponent(out Rigidbody2D rgRigidbody2D))
+            {
+                rgRigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+                _rgBody2D.mass -= rgRigidbody2D.mass;
+            }
+
+            outerCatchableItem.transform.SetParent(null);
+            outerCatchableItem.transform.position += Vector3.up * 0.3f;
+            outerCatchableItem = null;
         }
 
         void PutItem()
         {
             itemCollision.SetActive(false);
-            
+
             if (catchableItem.gameObject.TryGetComponent(out Rigidbody2D rgRigidbody2D))
             {
                 rgRigidbody2D.bodyType = RigidbodyType2D.Dynamic;
                 _rgBody2D.mass -= rgRigidbody2D.mass;
             }
-            
+
             foreach (var child in catchableItem.GetComponentsInChildren<Collider2D>())
             {
                 child.enabled = true;
             }
-            
+
             catchableItem.transform.SetParent(null);
-            catchableItem.transform.position += Vector3.up * 0.2f;
+            catchableItem.transform.position += Vector3.up * 0.3f;
             catchableItem = null;
         }
 
@@ -148,8 +192,12 @@ namespace Game.Script
                 sitCollision.SetActive(false);
                 standCollision.SetActive(true);
                 itemCollision.SetActive(false);
+
+                if (outerCatchableItem != null)
+                    foreach (var childCollider in outerCatchableItem.GetComponentsInChildren<Collider2D>())
+                        childCollider.enabled = false;
             }));
-            
+
             return true;
         }
 
@@ -164,10 +212,13 @@ namespace Game.Script
                 activeCapsuleCollider2D = _sitCollider2D;
                 standCollision.SetActive(false);
                 sitCollision.SetActive(true);
+                if (outerCatchableItem != null)
+                    foreach (var childCollider in outerCatchableItem.GetComponentsInChildren<Collider2D>())
+                        childCollider.enabled = true;
                 if (catchableItem != null)
                     itemCollision.SetActive(true);
             }));
-            
+
             return true;
         }
 

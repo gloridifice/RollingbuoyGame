@@ -9,6 +9,7 @@ namespace Game.Script
         public static GameManager Instance;
 
         public GameObject pWinUi;
+        public bool isGameFinished;
 
         private void Awake()
         {
@@ -34,10 +35,14 @@ namespace Game.Script
 
         public void Win()
         {
+            if (isGameFinished) return;
+            
             if (pWinUi != null)
             {
                 Instantiate(pWinUi);
             }
+            
+            isGameFinished = true;
         }
     }
 }
