@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Game.Script
 {
@@ -11,8 +10,15 @@ namespace Game.Script
         {
             if (other.gameObject.TryGetComponent(out PlayerController player))
             {
-                SceneManager.LoadScene(sceneName);
-            } 
+                if (sceneName is { Length: > 0 })
+                {
+                    GameManager.Instance.LoadScene(sceneName);
+                }
+                else
+                {
+                    GameManager.Instance.Win();
+                }
+            }
         }
     }
 }
