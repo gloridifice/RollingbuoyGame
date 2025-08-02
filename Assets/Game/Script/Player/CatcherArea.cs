@@ -20,13 +20,10 @@ namespace Game.Script
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            Debug.Log($"Trigger enter! Name : {other.gameObject.name}");
             if (other.gameObject.TryGetComponent(out Catchable catchable))
             {
                 _catchableObject = catchable;
                 OnDetectCatch.Invoke(catchable);
-
-                Debug.Log("Catch!");
             }
         }
 
@@ -35,7 +32,6 @@ namespace Game.Script
             if (other.gameObject.TryGetComponent(out Catchable catchable) && catchable == _catchableObject)
             {
                 OnExitCatch.Invoke(_catchableObject);
-                Debug.Log("Exit catch area!");
             }
         }
     }

@@ -23,6 +23,7 @@ namespace Game.Script
         private bool _cachedQueryStartInColliders;
         private float _defaultMass;
         private float _massFactor;
+
         #region Interface
 
         public Vector2 FrameInput => _frameInput.Move;
@@ -78,18 +79,19 @@ namespace Game.Script
         private void FixedUpdate()
         {
             CheckCollisions();
-            
-            _massFactor =  Mathf.Max(0f, (_stats.MaxMovableMass - _rb.mass) / (_stats.MaxMovableMass - _defaultMass));
-            
+
+            _massFactor = Mathf.Max(0f, (_rc.massThatCannotMove - _rb.mass) / (_rc.massThatCannotMove - _defaultMass));
+
             if (_rc.ringMode == RingMode.Stand)
             {
                 _massFactor = Mathf.Max(0.4f, _massFactor);
             }
-            
-            
+
+
             HandleJump();
             HandleDirection();
             HandleGravity();
+            HandleDamping();
 
             ApplyMovement();
         }
@@ -192,17 +194,39 @@ namespace Game.Script
 
         private void HandleGravity()
         {
-            if (_grounded && _frameVelocity.y <= 0f)
+            if (_grounded && _frameVelocity.y <= 0f && !_rc.isInWater)
             {
                 _frameVelocity.y = _stats.GroundingForce;
             }
             else
             {
                 var inAirGravity = _stats.FallAcceleration;
-                if (_endedJumpEarly && _frameVelocity.y > 0) inAirGravity *= _stats.JumpEndEarlyGravityModifier;
+                var verticalAcc = inAirGravity;
+
+                if (_rc.isInWater)
+                {
+                    var massFactor = Mathf.Clamp(-(_rc.massThatCanSinkInWater - _rb.mass) /
+                                                 (_rc.massThatCanSinkInWater - _defaultMass), -1f, 1f);
+
+                    verticalAcc *= massFactor;
+                }
+
+                if (_endedJumpEarly && _frameVelocity.y > 0) verticalAcc *= _stats.JumpEndEarlyGravityModifier;
                 _frameVelocity.y = Mathf.MoveTowards(_frameVelocity.y, -_stats.MaxFallSpeed,
-                    inAirGravity * Time.fixedDeltaTime);
+                    verticalAcc * Time.fixedDeltaTime);
             }
+        }
+
+        #endregion
+
+        #region Damping
+
+        private void HandleDamping()
+        {
+            var len = _frameVelocity.magnitude;
+            var dampingAcc = len * len * (_rc.isInWater ? _rc.inWaterDamping : _rc.inAirDamping) * 0.1f;
+            _frameVelocity = Vector2.MoveTowards(_frameVelocity, Vector2.zero,
+                dampingAcc * Time.fixedDeltaTime);
         }
 
         #endregion

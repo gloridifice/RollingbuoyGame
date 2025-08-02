@@ -25,6 +25,15 @@ namespace Game.Script
         public GameObject catchPointMarker;
 
         public Catchable catchableItem;
+
+        public float massThatCanSinkInWater = 10f;
+        public float massThatCannotMove = 20f;
+
+        public float inWaterDamping = 2f;
+        public float inAirDamping = 1f;
+
+        public float maxFloatSpeed = 10f;
+        public float floatAcc = 10f;
         
         private void Start()
         {
