@@ -20,6 +20,7 @@ namespace Game.Script
 
         public GameObject visual;
         public GameObject standCollision;
+        public GameObject itemCollision;
 
         public CatcherArea catcherArea;
         public GameObject catchPointMarker;
@@ -37,8 +38,9 @@ namespace Game.Script
         
         private void Start()
         {
-            standCollision.SetActive(false);
             _rgBody2D = GetComponent<Rigidbody2D>();
+            standCollision.SetActive(false);
+            itemCollision.SetActive(false);
         }
 
         private void Update()
@@ -80,10 +82,13 @@ namespace Game.Script
             }
 
             catchableItem = catchable;
+            itemCollision.SetActive(true);
         }
 
         void PutItem()
         {
+            itemCollision.SetActive(false);
+            
             if (catchableItem.gameObject.TryGetComponent(out Rigidbody2D rgRigidbody2D))
             {
                 rgRigidbody2D.bodyType = RigidbodyType2D.Dynamic;
