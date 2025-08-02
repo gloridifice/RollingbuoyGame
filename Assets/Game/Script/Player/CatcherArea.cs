@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Game.Script
 {
@@ -10,8 +12,8 @@ namespace Game.Script
     {
         private Catchable _catchableObject;
 
-        public readonly Action<Catchable> OnDetectCatch = ((catchable => {}));
-        public readonly Action<Catchable> OnExitCatch = ((catchable => {}));
+        public UnityEvent<Catchable> onDetectCatch = new ();
+        public UnityEvent<Catchable> onExitCatch = new ();
 
         public Catchable GetCatchableObject()
         {
@@ -23,7 +25,7 @@ namespace Game.Script
             if (other.gameObject.TryGetComponent(out Catchable catchable))
             {
                 _catchableObject = catchable;
-                OnDetectCatch.Invoke(catchable);
+                onDetectCatch.Invoke(catchable);
             }
         }
 
@@ -31,7 +33,8 @@ namespace Game.Script
         {
             if (other.gameObject.TryGetComponent(out Catchable catchable) && catchable == _catchableObject)
             {
-                OnExitCatch.Invoke(_catchableObject);
+                onExitCatch.Invoke(_catchableObject);
+                _catchableObject = null;
             }
         }
     }
