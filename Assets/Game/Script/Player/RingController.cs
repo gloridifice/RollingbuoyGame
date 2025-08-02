@@ -121,6 +121,7 @@ namespace Game.Script
             }
             
             catchableItem.transform.SetParent(null);
+            catchableItem.transform.position += Vector3.up * 0.2f;
             catchableItem = null;
         }
 
