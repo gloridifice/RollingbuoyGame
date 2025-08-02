@@ -477,8 +477,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2151391534229136579}
+  - component: {fileID: -1053692630092465275}
   m_Layer: 5
-  m_Name: P_Koiro
+  m_Name: P_DevInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -505,3 +506,17 @@ RectTransform:
   m_AnchoredPosition: {x: -296.5, y: -237.63463}
   m_SizeDelta: {x: 200, y: 248.73074}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &-1053692630092465275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8496536807188429527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e09a997524f9465ca7931c19d8518a7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 200
+  direction: {x: 0.70710677, y: 0.70710677}

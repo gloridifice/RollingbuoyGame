@@ -8,7 +8,7 @@ namespace Game.Script
         
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.gameObject.TryGetComponent(out PlayerController player))
+            if (other.attachedRigidbody.gameObject.TryGetComponent(out PlayerController player))
             {
                 if (sceneName is { Length: > 0 })
                 {
