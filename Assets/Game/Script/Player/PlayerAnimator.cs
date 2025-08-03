@@ -67,9 +67,21 @@ namespace Game.Script.Player
                 SetColor(_launchParticles);
                 _jumpParticles.Play();
                 
-                _source.clip = jumpAudio;
-                _source.Play();
+                PlayAudioClipInRandom(jumpAudio, 0.9f, 1.6f, 0.7f, 1.3f);
             }
+        }
+
+        private void PlayAudioClip(AudioClip clip, float pitch = 1f, float volume = 1f)
+        {
+            _source.clip = clip;
+            _source.pitch = pitch;
+            _source.volume = volume;
+            _source.Play();
+        }
+
+        private void PlayAudioClipInRandom(AudioClip clip, float pitchMin, float pitchMax, float volumeMin, float volumeMax)
+        {
+            PlayAudioClip(clip, Random.Range(pitchMin, pitchMax), Random.Range(volumeMin, volumeMax));
         }
 
         private void OnGroundedChanged(bool grounded, float impact)

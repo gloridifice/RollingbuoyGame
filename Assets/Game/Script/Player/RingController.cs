@@ -76,32 +76,24 @@ namespace Game.Script
                 ChangeRingMode();
             }
 
-            if (Input.GetKeyDown(KeyCode.E))
+            if (ringMode == RingMode.Sit)
             {
-                if (catchableItem == null)
+                if (Input.GetKeyDown(KeyCode.J))
                 {
-                    if (innerCatcherArea.GetCatchableObject() != null)
-                    {
-                        CatchInnerItem(innerCatcherArea.GetCatchableObject());
-                    }
-                    else if (outerCatcherArea.GetCatchableObject() != null)
-                    {
-                        CatchOuterItem(outerCatcherArea.GetCatchableObject());
-                    }
+                    if (catchableItem == null)
+                        if (innerCatcherArea.GetCatchableObject() != null)
+                            CatchInnerItem(innerCatcherArea.GetCatchableObject());
+                        else
+                            PutInnerItem();
                 }
-                else
+
+                if (Input.GetKeyDown(KeyCode.K))
                 {
-                    if (ringMode == RingMode.Sit)
-                    {
-                        if (outerCatchableItem != null)
-                        {
+                    if (outerCatchableItem == null)
+                        if (outerCatcherArea.GetCatchableObject() != null)
+                            CatchOuterItem(outerCatcherArea.GetCatchableObject());
+                        else
                             PutOuterItem();
-                        }
-                        else if (catchableItem != null)
-                        {
-                            PutItem();
-                        }
-                    }
                 }
             }
 
@@ -125,7 +117,7 @@ namespace Game.Script
                     rgRigidbody2D.bodyType = RigidbodyType2D.Kinematic;
                     _rgBody2D.mass += rgRigidbody2D.mass;
                 }
-                
+
                 foreach (var col in outerCatchable.GetComponentsInChildren<Collider2D>())
                     if (!activeCapsuleCollider2D.Contains(col))
                         activeCapsuleCollider2D.Add(col);
@@ -160,7 +152,7 @@ namespace Game.Script
             foreach (var col in outerCatchableItem.GetComponentsInChildren<Collider2D>())
                 if (activeCapsuleCollider2D.Contains(col))
                     activeCapsuleCollider2D.Remove(col);
-            
+
             if (outerCatchableItem.gameObject.TryGetComponent(out Rigidbody2D rgRigidbody2D))
             {
                 rgRigidbody2D.bodyType = RigidbodyType2D.Dynamic;
@@ -172,7 +164,7 @@ namespace Game.Script
             outerCatchableItem = null;
         }
 
-        void PutItem()
+        void PutInnerItem()
         {
             itemCollision.SetActive(false);
 
@@ -215,13 +207,13 @@ namespace Game.Script
 
             var tween = visual.transform.DOLocalRotate(new Vector3(90f, 0f, 0f), standSitDuration);
             tween.SetEase(Ease.InOutCubic);
-            
+
             _pc.enableInput = false;
             tween.OnComplete((() =>
             {
                 activeCapsuleCollider2D.Clear();
                 activeCapsuleCollider2D.AddRange(_standColliders);
-                
+
                 sitCollisionObject.SetActive(false);
                 standCollisionObject.SetActive(true);
                 itemCollision.SetActive(false);
@@ -249,7 +241,8 @@ namespace Game.Script
         {
             ringMode = RingMode.Sit;
 
-            var tween = visual.transform.DOLocalRotate(new Vector3(0f, 0f, 0f), standSitDuration).SetEase(Ease.InOutCubic);
+            var tween = visual.transform.DOLocalRotate(new Vector3(0f, 0f, 0f), standSitDuration)
+                .SetEase(Ease.InOutCubic);
             model.transform.DOLocalRotateQuaternion(Quaternion.identity, standSitDuration).SetEase(Ease.InOutCubic);
             _pc.enableInput = false;
             tween.OnComplete((() =>
