@@ -40,6 +40,8 @@ namespace Game.Script
 
         private void Awake()
         {
+            var a = GameManager.Instance; // Init GameManager
+            
             _rb = GetComponent<Rigidbody2D>();
             _rc = GetComponent<RingController>();
 
