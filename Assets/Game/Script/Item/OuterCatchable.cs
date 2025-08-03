@@ -4,6 +4,6 @@ namespace Game.Script
 {
     public class OuterCatchable : Catchable
     {
-        public float outerRadius = 1.0f;
+        public float outerRadius = 3.0f;
     }
 }

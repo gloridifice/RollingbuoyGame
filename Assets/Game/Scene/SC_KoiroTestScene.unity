@@ -590,7 +590,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   catchOffset: {x: 0, y: 0, z: 0}
-  outerRadius: 1.5
+  outerRadius: 3
 --- !u!1 &1577008229
 GameObject:
   m_ObjectHideFlags: 0
@@ -1495,6 +1495,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 466934646915111439, guid: 522a1be44f7124c549c94654036a8a4d, type: 3}
+      propertyPath: m_Mass
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 723064352627500833, guid: 522a1be44f7124c549c94654036a8a4d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -10.77

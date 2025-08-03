@@ -98,8 +98,8 @@ GameObject:
   - component: {fileID: 466934646915111439}
   - component: {fileID: 3373020392039612411}
   - component: {fileID: 4473304554926037477}
-  - component: {fileID: 2133315176504229430}
   - component: {fileID: 3820468508882681705}
+  - component: {fileID: 1238026398877671556}
   m_Layer: 7
   m_Name: P_OuterRing
   m_TagString: Untagged
@@ -135,7 +135,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1000
+  m_Mass: 10
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
@@ -242,19 +242,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 2, y: 0.8}
   m_EdgeRadius: 0
---- !u!114 &2133315176504229430
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5696272485105321090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c8913f7d9524d488c3820bdeea90bc1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  catchOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &3820468508882681705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,3 +256,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tags:
   - outer
+--- !u!114 &1238026398877671556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5696272485105321090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a26062b0805a44a6801e1022c7dbe9a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  catchOffset: {x: 0, y: 0, z: 0}
+  outerRadius: 3.5
