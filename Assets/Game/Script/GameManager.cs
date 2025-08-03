@@ -8,6 +8,7 @@ namespace Game.Script
     public class GameManager : MonoBehaviour
     {
         private static GameManager _instance;
+
         public static GameManager Instance
         {
             get
@@ -16,10 +17,9 @@ namespace Game.Script
                 {
                     var obj = new GameObject("Game Manager");
                     _instance = obj.AddComponent<GameManager>();
-                    _instance._audioSource = obj.AddComponent<AudioSource>();
                     DontDestroyOnLoad(_instance);
                 }
-                
+
                 return _instance;
             }
         }
@@ -30,11 +30,12 @@ namespace Game.Script
 
         private void Awake()
         {
+            _audioSource = gameObject.AddComponent<AudioSource>();
             _audioSource.clip = Resources.Load<AudioClip>("Audio/A_Bgm0");
             _audioSource.loop = true;
             _audioSource.volume = 0.4f;
             _audioSource.Play();
-            
+
             pWinUi = Resources.Load<GameObject>("Prefab/P_WinCanvas");
         }
 
@@ -55,7 +56,7 @@ namespace Game.Script
         public void Win()
         {
             if (isGameFinished) return;
-            
+
             if (pWinUi != null)
             {
                 Instantiate(pWinUi);
