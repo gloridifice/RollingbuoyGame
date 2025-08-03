@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,11 +18,15 @@ namespace Game.Script
         public RingMode ringMode = RingMode.Sit;
 
         private Rigidbody2D _rgBody2D;
+        private PlayerController _pc;
 
         public GameObject visual;
         public GameObject model;
         [FormerlySerializedAs("sitCollision")] public GameObject sitCollisionObject;
-        [FormerlySerializedAs("standCollision")] public GameObject standCollisionObject;
+
+        [FormerlySerializedAs("standCollision")]
+        public GameObject standCollisionObject;
+
         public GameObject itemCollision;
 
         [FormerlySerializedAs("catcherArea")] public CatcherArea innerCatcherArea;
@@ -36,7 +41,7 @@ namespace Game.Script
         public float inWaterDamping = 2f;
         public float inAirDamping = 1f;
 
-        public CapsuleCollider2D[] activeCapsuleCollider2D;
+        public List<Collider2D> activeCapsuleCollider2D = new();
 
         private CapsuleCollider2D[] _sitColliders;
         private CapsuleCollider2D[] _standColliders;
@@ -45,8 +50,12 @@ namespace Game.Script
 
         public OuterCatchable outerCatchableItem;
 
+        public float standSitDuration = 0.3f;
+
         private void Awake()
         {
+            _pc = GetComponent<PlayerController>();
+            _rgBody2D = GetComponent<Rigidbody2D>();
             _sitColliders = sitCollisionObject.GetComponents<CapsuleCollider2D>();
             _standColliders = standCollisionObject.GetComponents<CapsuleCollider2D>();
             var stand = _standColliders[0];
@@ -55,10 +64,9 @@ namespace Game.Script
 
         private void Start()
         {
-            _rgBody2D = GetComponent<Rigidbody2D>();
             standCollisionObject.SetActive(false);
             itemCollision.SetActive(false);
-            activeCapsuleCollider2D = _sitColliders;
+            activeCapsuleCollider2D.AddRange(_sitColliders);
         }
 
         private void Update()
@@ -117,6 +125,10 @@ namespace Game.Script
                     rgRigidbody2D.bodyType = RigidbodyType2D.Kinematic;
                     _rgBody2D.mass += rgRigidbody2D.mass;
                 }
+                
+                foreach (var col in outerCatchable.GetComponentsInChildren<Collider2D>())
+                    if (!activeCapsuleCollider2D.Contains(col))
+                        activeCapsuleCollider2D.Add(col);
 
                 outerCatchableItem = outerCatchable;
             }
@@ -145,6 +157,10 @@ namespace Game.Script
 
         void PutOuterItem()
         {
+            foreach (var col in outerCatchableItem.GetComponentsInChildren<Collider2D>())
+                if (activeCapsuleCollider2D.Contains(col))
+                    activeCapsuleCollider2D.Remove(col);
+            
             if (outerCatchableItem.gameObject.TryGetComponent(out Rigidbody2D rgRigidbody2D))
             {
                 rgRigidbody2D.bodyType = RigidbodyType2D.Dynamic;
@@ -184,22 +200,28 @@ namespace Game.Script
 
         void ChangeRingMode()
         {
-            if (ringMode == RingMode.Sit)
-                TryStand();
-            else
-                TrySit();
+            if (_pc.IsOnGround())
+            {
+                if (ringMode == RingMode.Sit)
+                    TryStand();
+                else
+                    TrySit();
+            }
         }
 
         bool TryStand()
         {
             ringMode = RingMode.Stand;
 
-            var tween = visual.transform.DOLocalRotate(new Vector3(90f, 0f, 0f), 0.5f);
+            var tween = visual.transform.DOLocalRotate(new Vector3(90f, 0f, 0f), standSitDuration);
             tween.SetEase(Ease.InOutCubic);
-
+            
+            _pc.enableInput = false;
             tween.OnComplete((() =>
             {
-                activeCapsuleCollider2D = _standColliders;
+                activeCapsuleCollider2D.Clear();
+                activeCapsuleCollider2D.AddRange(_standColliders);
+                
                 sitCollisionObject.SetActive(false);
                 standCollisionObject.SetActive(true);
                 itemCollision.SetActive(false);
@@ -207,10 +229,12 @@ namespace Game.Script
                 if (outerCatchableItem != null)
                 {
                     SetStandColliderRadius(outerCatchableItem.outerRadius);
-                    
+
                     foreach (var childCollider in outerCatchableItem.GetComponentsInChildren<Collider2D>())
                         childCollider.enabled = false;
                 }
+
+                _pc.enableInput = true;
             }));
 
             return true;
@@ -220,26 +244,34 @@ namespace Game.Script
         {
             _standColliders[0].size = new Vector2(radius * 2, radius * 2);
         }
-        
+
         bool TrySit()
         {
             ringMode = RingMode.Sit;
 
-            var tween = visual.transform.DOLocalRotate(new Vector3(0f, 0f, 0f), 0.5f);
-            tween.SetEase(Ease.InOutCubic);
+            var tween = visual.transform.DOLocalRotate(new Vector3(0f, 0f, 0f), standSitDuration).SetEase(Ease.InOutCubic);
+            model.transform.DOLocalRotateQuaternion(Quaternion.identity, standSitDuration).SetEase(Ease.InOutCubic);
+            _pc.enableInput = false;
             tween.OnComplete((() =>
             {
-                activeCapsuleCollider2D = _sitColliders;
+                activeCapsuleCollider2D.Clear();
+                activeCapsuleCollider2D.AddRange(_sitColliders);
+
                 standCollisionObject.SetActive(false);
                 sitCollisionObject.SetActive(true);
                 if (outerCatchableItem != null)
                 {
+                    var colliders = outerCatchableItem.GetComponentsInChildren<Collider2D>();
+                    activeCapsuleCollider2D.AddRange(colliders);
                     SetStandColliderRadius(_defaultStandRadius);
-                    foreach (var childCollider in outerCatchableItem.GetComponentsInChildren<Collider2D>())
+                    foreach (var childCollider in colliders)
                         childCollider.enabled = true;
                 }
+
                 if (catchableItem != null)
                     itemCollision.SetActive(true);
+
+                _pc.enableInput = true;
             }));
 
             return true;

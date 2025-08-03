@@ -23,6 +23,8 @@ namespace Game.Script
         private float _defaultMass;
         private float _massFactor;
 
+        public bool enableInput = true;
+
         public Transform groundRaycastOrigin;
         public Transform ceilRaycastOrigin;
 
@@ -49,6 +51,11 @@ namespace Game.Script
         {
             _time += Time.deltaTime;
             GatherInput();
+        }
+
+        public bool IsOnGround()
+        {
+            return _grounded;
         }
 
         private void GatherInput()
@@ -88,9 +95,12 @@ namespace Game.Script
                 _massFactor = Mathf.Max(0.4f, _massFactor);
             }
 
+            if (enableInput)
+            {
+                HandleJump();
+                HandleDirection();
+            }
 
-            HandleJump();
-            HandleDirection();
             HandleGravity();
             HandleDamping();
 
@@ -108,15 +118,30 @@ namespace Game.Script
 
             bool groundHit = false;
             bool ceilingHit = false;
+
+            bool RaycastShape(Collider2D col, Vector2 direction, float distance, LayerMask layerMask)
+            {
+                if (col is CapsuleCollider2D capsuleCol)
+                {
+                    return Physics2D.CapsuleCast(col.bounds.center, capsuleCol.size, capsuleCol.direction, 0, direction,
+                        distance, layerMask);
+                }
+                if (col is BoxCollider2D boxCol)
+                {
+                    var a = Physics2D.BoxCast(col.bounds.center, boxCol.size, 0, Vector2.down, _stats.GrounderDistance,
+                        ~_stats.PlayerLayer);
+                }
+
+                return false;
+            }
+
             foreach (var col in _rc.activeCapsuleCollider2D)
             {
                 // Ground and Ceiling
                 if (!groundHit)
-                    groundHit |= Physics2D.CapsuleCast(col.bounds.center, col.size, col.direction, 0, Vector2.down,
-                        _stats.GrounderDistance, ~_stats.PlayerLayer);
+                    groundHit |= RaycastShape(col, Vector2.down, _stats.GrounderDistance, ~_stats.PlayerLayer);
                 if (!ceilingHit)
-                    ceilingHit |= Physics2D.CapsuleCast(col.bounds.center, col.size, col.direction, 0, Vector2.up,
-                        _stats.GrounderDistance, ~_stats.PlayerLayer);
+                    ceilingHit |= RaycastShape(col, Vector2.up, _stats.GrounderDistance, ~_stats.PlayerLayer);
             }
 
             // Hit a Ceiling
