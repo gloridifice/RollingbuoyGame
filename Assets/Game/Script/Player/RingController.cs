@@ -81,19 +81,27 @@ namespace Game.Script
                 if (Input.GetKeyDown(KeyCode.J))
                 {
                     if (catchableItem == null)
+                    {
                         if (innerCatcherArea.GetCatchableObject() != null)
                             CatchInnerItem(innerCatcherArea.GetCatchableObject());
-                        else
-                            PutInnerItem();
+                    }
+                    else
+                    {
+                        PutInnerItem();
+                    }
                 }
 
                 if (Input.GetKeyDown(KeyCode.K))
                 {
                     if (outerCatchableItem == null)
+                    {
                         if (outerCatcherArea.GetCatchableObject() != null)
                             CatchOuterItem(outerCatcherArea.GetCatchableObject());
-                        else
-                            PutOuterItem();
+                    }
+                    else
+                    {
+                        PutOuterItem();
+                    }
                 }
             }
 
