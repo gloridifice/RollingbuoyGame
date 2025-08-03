@@ -183,7 +183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   catchOffset: {x: 0, y: 0, z: 0}
-  outerRadius: 2.2
+  outerRadius: 2.5
   visual: {fileID: 0}
 --- !u!1001 &7353738878220285755
 PrefabInstance:
