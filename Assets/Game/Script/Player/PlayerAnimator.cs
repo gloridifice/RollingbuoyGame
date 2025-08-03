@@ -17,21 +17,35 @@ namespace Game.Script.Player
 
         private AudioSource _source;
         private IPlayerController _player;
+        private RingController _rc;
         private bool _grounded;
         private ParticleSystem.MinMaxGradient _currentGradient;
 
+        [Header("Audio")]
+        
         public AudioClip jumpAudio;
+        public AudioClip catchAudio;
+        public AudioClip enterWaterAudio;
+        public float waterAudioPlayInterval = 1.0f;
+
+        private float _waterAudioPlayTimer;
 
         private void Awake()
         {
             _source = GetComponent<AudioSource>();
             _player = GetComponentInParent<IPlayerController>();
+            _rc = GetComponentInParent<RingController>();
         }
-
+        
         private void OnEnable()
         {
             _player.Jumped += OnJumped;
             _player.GroundedChanged += OnGroundedChanged;
+            _rc.onCatchInnerItem.AddListener(OnCatch);
+            _rc.onCatchOuterItem.AddListener(OnCatch);
+            _rc.onPutInnerItem.AddListener(OnPut);
+            _rc.onPutOuterItem.AddListener(OnPut);
+            _rc.onEnterWater.AddListener(OnEnterWater);
 
             _moveParticles.Play();
         }
@@ -40,13 +54,39 @@ namespace Game.Script.Player
         {
             _player.Jumped -= OnJumped;
             _player.GroundedChanged -= OnGroundedChanged;
+            _rc.onCatchInnerItem.RemoveListener(OnCatch);
+            _rc.onCatchOuterItem.RemoveListener(OnCatch);
+            _rc.onPutInnerItem.RemoveListener(OnPut);
+            _rc.onPutOuterItem.RemoveListener(OnPut);
+            _rc.onEnterWater.RemoveListener(OnEnterWater);
 
             _moveParticles.Stop();
+        }
+        
+        void OnCatch(Catchable catchable)
+        {
+            PlayAudioClipInRandom(catchAudio, 0.8f, 1.5f, 0.8f, 1.2f);
+        }
+        
+        void OnPut(Catchable catchable)
+        {
+            PlayAudioClipInRandom(catchAudio, 0.4f, 0.7f, 0.8f, 1.0f);
+        }
+
+        void OnEnterWater()
+        {
+            if (_waterAudioPlayTimer == 0f)
+            {
+                PlayAudioClipInRandom(enterWaterAudio, 0.5f, 1.0f, 0.4f, 0.6f);
+            }
+            _waterAudioPlayTimer = waterAudioPlayInterval;
         }
 
         private void Update()
         {
             if (_player == null) return;
+
+            _waterAudioPlayTimer = Mathf.Max(_waterAudioPlayTimer - Time.deltaTime, 0f);
 
             DetectGroundColor();
 

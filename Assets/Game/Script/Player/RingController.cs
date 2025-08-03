@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
@@ -51,6 +52,17 @@ namespace Game.Script
         public OuterCatchable outerCatchableItem;
 
         public float standSitDuration = 0.3f;
+        
+        [HideInInspector]
+        public UnityEvent<Catchable> onCatchInnerItem;
+        [HideInInspector]
+        public UnityEvent<OuterCatchable> onCatchOuterItem;
+        [HideInInspector]
+        public UnityEvent<Catchable> onPutInnerItem;
+        [HideInInspector]
+        public UnityEvent<OuterCatchable> onPutOuterItem;
+        [HideInInspector]
+        public UnityEvent onEnterWater;
 
         private void Awake()
         {
@@ -131,6 +143,7 @@ namespace Game.Script
                         activeCapsuleCollider2D.Add(col);
 
                 outerCatchableItem = outerCatchable;
+                onCatchOuterItem.Invoke(outerCatchable);
             }
         }
 
@@ -153,6 +166,7 @@ namespace Game.Script
             catchableItem = catchable;
 
             itemCollision.SetActive(true);
+            onCatchInnerItem.Invoke(catchable);
         }
 
         void PutOuterItem()
@@ -169,6 +183,7 @@ namespace Game.Script
 
             outerCatchableItem.transform.SetParent(null);
             outerCatchableItem.transform.position += Vector3.up * 0.3f;
+            onPutOuterItem.Invoke(outerCatchableItem);
             outerCatchableItem = null;
         }
 
@@ -193,6 +208,7 @@ namespace Game.Script
             rot.x = 0f;
             rot.y = 0f;
             catchableItem.transform.rotation = Quaternion.Euler(rot);
+            onPutInnerItem.Invoke(catchableItem);
             catchableItem = null;
         }
 
@@ -288,8 +304,12 @@ namespace Game.Script
         {
             if (other.gameObject.TryGetComponent(out WaterArea water))
             {
+                if (_inWaterCount == 0)
+                {
+                    isInWater = true;
+                    onEnterWater.Invoke();
+                }
                 _inWaterCount += 1;
-                isInWater = true;
             }
         }
 

@@ -151,6 +151,9 @@ MonoBehaviour:
   _moveParticles: {fileID: 4910415226558260712}
   _landParticles: {fileID: 2270042259869328520}
   jumpAudio: {fileID: 8300000, guid: a43469f32ba60934ca3a76df0abda1b6, type: 3}
+  catchAudio: {fileID: 8300000, guid: 436babf2756cde648a419510b12d8e50, type: 3}
+  enterWaterAudio: {fileID: 8300000, guid: e5a834a5dc18e204e977e67ee51b8315, type: 3}
+  waterAudioPlayInterval: 1
 --- !u!1 &1714452311506148365
 GameObject:
   m_ObjectHideFlags: 0
@@ -35357,6 +35360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stats: {fileID: 11400000, guid: 05e6a06c5af93134ab98ff12e2c27265, type: 2}
+  rb: {fileID: 0}
   enableInput: 1
   groundRaycastOrigin: {fileID: 0}
   ceilRaycastOrigin: {fileID: 0}
@@ -35416,4 +35420,19 @@ MonoBehaviour:
   activeCapsuleCollider2D: []
   outerCatchableItem: {fileID: 0}
   standSitDuration: 0.3
+  onCatchInnerItem:
+    m_PersistentCalls:
+      m_Calls: []
+  onCatchOuterItem:
+    m_PersistentCalls:
+      m_Calls: []
+  onPutInnerItem:
+    m_PersistentCalls:
+      m_Calls: []
+  onPutOuterItem:
+    m_PersistentCalls:
+      m_Calls: []
+  onEnterWater:
+    m_PersistentCalls:
+      m_Calls: []
   isInWater: 0
