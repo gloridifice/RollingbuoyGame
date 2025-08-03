@@ -7,9 +7,6 @@ namespace Game.Script.Player
     /// </summary>
     public class PlayerAnimator : MonoBehaviour
     {
-        [Header("Settings")] [SerializeField, Range(1f, 3f)]
-        private float _maxIdleSpeed = 2;
-
         [Header("Particles")] [SerializeField] private ParticleSystem _jumpParticles;
         [SerializeField] private ParticleSystem _launchParticles;
         [SerializeField] private ParticleSystem _moveParticles;

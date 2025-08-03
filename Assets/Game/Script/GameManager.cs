@@ -13,7 +13,7 @@ namespace Game.Script
             {
                 if (_instance == null)
                 {
-                    var obj = new GameObject();
+                    var obj = new GameObject("Game Manager");
                     _instance = obj.AddComponent<GameManager>();
                     DontDestroyOnLoad(_instance);
                 }
@@ -24,6 +24,11 @@ namespace Game.Script
 
         public GameObject pWinUi;
         public bool isGameFinished;
+
+        private void Awake()
+        {
+            pWinUi = Resources.Load<GameObject>("Prefab/P_WinCanvas");
+        }
 
         private void Update()
         {
@@ -47,7 +52,8 @@ namespace Game.Script
             {
                 Instantiate(pWinUi);
             }
-            
+
+            FindFirstObjectByType<PlayerController>().enableInput = false;
             isGameFinished = true;
         }
     }
