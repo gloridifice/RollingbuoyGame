@@ -20,8 +20,8 @@ namespace Game.Script
 
         public GameObject visual;
         public GameObject model;
-        public GameObject sitCollision;
-        public GameObject standCollision;
+        [FormerlySerializedAs("sitCollision")] public GameObject sitCollisionObject;
+        [FormerlySerializedAs("standCollision")] public GameObject standCollisionObject;
         public GameObject itemCollision;
 
         [FormerlySerializedAs("catcherArea")] public CatcherArea innerCatcherArea;
@@ -38,23 +38,27 @@ namespace Game.Script
 
         public CapsuleCollider2D[] activeCapsuleCollider2D;
 
-        private CapsuleCollider2D[] _sitCollider2D;
-        private CapsuleCollider2D[] _standCollider2D;
+        private CapsuleCollider2D[] _sitColliders;
+        private CapsuleCollider2D[] _standColliders;
 
-        public Catchable outerCatchableItem;
+        private float _defaultStandRadius;
+
+        public OuterCatchable outerCatchableItem;
 
         private void Awake()
         {
-            _sitCollider2D = sitCollision.GetComponents<CapsuleCollider2D>();
-            _standCollider2D = standCollision.GetComponents<CapsuleCollider2D>();
+            _sitColliders = sitCollisionObject.GetComponents<CapsuleCollider2D>();
+            _standColliders = standCollisionObject.GetComponents<CapsuleCollider2D>();
+            var stand = _standColliders[0];
+            _defaultStandRadius = stand.size.y / 2f;
         }
 
         private void Start()
         {
             _rgBody2D = GetComponent<Rigidbody2D>();
-            standCollision.SetActive(false);
+            standCollisionObject.SetActive(false);
             itemCollision.SetActive(false);
-            activeCapsuleCollider2D = _sitCollider2D;
+            activeCapsuleCollider2D = _sitColliders;
         }
 
         private void Update()
@@ -103,16 +107,19 @@ namespace Game.Script
 
         void CatchOuterItem(Catchable catchable)
         {
-            catchable.transform.SetParent(catchPointMarker.transform);
-            catchable.transform.localPosition = catchable.catchOffset;
-
-            if (catchable.gameObject.TryGetComponent(out Rigidbody2D rgRigidbody2D))
+            if (catchable is OuterCatchable outerCatchable)
             {
-                rgRigidbody2D.bodyType = RigidbodyType2D.Kinematic;
-                _rgBody2D.mass += rgRigidbody2D.mass;
-            }
+                catchable.transform.SetParent(catchPointMarker.transform);
+                catchable.transform.localPosition = catchable.catchOffset;
 
-            outerCatchableItem = catchable;
+                if (catchable.gameObject.TryGetComponent(out Rigidbody2D rgRigidbody2D))
+                {
+                    rgRigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+                    _rgBody2D.mass += rgRigidbody2D.mass;
+                }
+
+                outerCatchableItem = outerCatchable;
+            }
         }
 
         void CatchInnerItem(Catchable catchable)
@@ -188,19 +195,28 @@ namespace Game.Script
 
             tween.OnComplete((() =>
             {
-                activeCapsuleCollider2D = _standCollider2D;
-                sitCollision.SetActive(false);
-                standCollision.SetActive(true);
+                activeCapsuleCollider2D = _standColliders;
+                sitCollisionObject.SetActive(false);
+                standCollisionObject.SetActive(true);
                 itemCollision.SetActive(false);
 
                 if (outerCatchableItem != null)
+                {
+                    SetStandColliderRadius(outerCatchableItem.outerRadius);
+                    
                     foreach (var childCollider in outerCatchableItem.GetComponentsInChildren<Collider2D>())
                         childCollider.enabled = false;
+                }
             }));
 
             return true;
         }
 
+        void SetStandColliderRadius(float radius)
+        {
+            _standColliders[0].size = new Vector2(radius * 2, radius * 2);
+        }
+        
         bool TrySit()
         {
             ringMode = RingMode.Sit;
@@ -209,12 +225,15 @@ namespace Game.Script
             tween.SetEase(Ease.InOutCubic);
             tween.OnComplete((() =>
             {
-                activeCapsuleCollider2D = _sitCollider2D;
-                standCollision.SetActive(false);
-                sitCollision.SetActive(true);
+                activeCapsuleCollider2D = _sitColliders;
+                standCollisionObject.SetActive(false);
+                sitCollisionObject.SetActive(true);
                 if (outerCatchableItem != null)
+                {
+                    SetStandColliderRadius(_defaultStandRadius);
                     foreach (var childCollider in outerCatchableItem.GetComponentsInChildren<Collider2D>())
                         childCollider.enabled = true;
+                }
                 if (catchableItem != null)
                     itemCollision.SetActive(true);
             }));
@@ -232,6 +251,7 @@ namespace Game.Script
             if (other.gameObject.TryGetComponent(out WaterArea water))
             {
                 isInWater = true;
+                Debug.Log("Enter water!");
             }
         }
 
@@ -240,6 +260,7 @@ namespace Game.Script
             if (other.gameObject.TryGetComponent(out WaterArea water))
             {
                 isInWater = false;
+                Debug.Log("Exit water!");
             }
         }
     }

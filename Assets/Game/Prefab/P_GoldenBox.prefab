@@ -106,7 +106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f91dc735194e4d8a2c327ab737d0fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tags: []
+  tags:
+  - button
 --- !u!114 &7253185258460990948
 MonoBehaviour:
   m_ObjectHideFlags: 0
