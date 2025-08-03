@@ -249,11 +249,13 @@ namespace Game.Script
 
 
         public bool isInWater = false;
+        private int _inWaterCount = 0;
 
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.gameObject.TryGetComponent(out WaterArea water))
             {
+                _inWaterCount += 1;
                 isInWater = true;
             }
         }
@@ -262,7 +264,11 @@ namespace Game.Script
         {
             if (other.gameObject.TryGetComponent(out WaterArea water))
             {
-                isInWater = false;
+                _inWaterCount -= 1;
+                if (_inWaterCount == 0)
+                {
+                    isInWater = false;
+                }
             }
         }
     }
