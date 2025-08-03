@@ -351,6 +351,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2026091863129034871, guid: 8f81fda4c9338455abd3750aef1cf761, type: 3}
+      propertyPath: m_text
+      value: Koiro
+      objectReference: {fileID: 0}
     - target: {fileID: 2151391534229136579, guid: 8f81fda4c9338455abd3750aef1cf761, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -503,7 +507,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2026091863129034871, guid: 8f81fda4c9338455abd3750aef1cf761, type: 3}
       propertyPath: m_text
-      value: DaNGo_iz
+      value: 'DaNGo
+
+        iz'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2026091863129034871, guid: 8f81fda4c9338455abd3750aef1cf761, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 256
       objectReference: {fileID: 0}
     - target: {fileID: 2151391534229136579, guid: 8f81fda4c9338455abd3750aef1cf761, type: 3}
       propertyPath: m_Pivot.x
@@ -585,6 +595,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2653086432007464152, guid: 8f81fda4c9338455abd3750aef1cf761, type: 3}
+      propertyPath: m_Padding.m_Top
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 2653086432007464152, guid: 8f81fda4c9338455abd3750aef1cf761, type: 3}
+      propertyPath: m_Padding.m_Bottom
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 2680300488055387630, guid: 8f81fda4c9338455abd3750aef1cf761, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -611,7 +629,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2989790250720457519, guid: 8f81fda4c9338455abd3750aef1cf761, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 255.3296
+      value: 181.5444
       objectReference: {fileID: 0}
     - target: {fileID: 2989790250720457519, guid: 8f81fda4c9338455abd3750aef1cf761, type: 3}
       propertyPath: m_AnchoredPosition.x
