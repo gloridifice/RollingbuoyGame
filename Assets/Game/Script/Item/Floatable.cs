@@ -12,6 +12,7 @@ namespace Game.Script
 
         public float floatForce = 70f;
 
+        private int _waterCount = 0;
         private void Awake()
         {
             if (TryGetComponent(out Rigidbody2D rigidbody2D))
@@ -33,6 +34,7 @@ namespace Game.Script
         {
             if (other.gameObject.TryGetComponent(out WaterArea water))
             {
+                _waterCount += 1;
                 isInWater = true;
             }
         }
@@ -41,7 +43,11 @@ namespace Game.Script
         {
             if (other.gameObject.TryGetComponent(out WaterArea water))
             {
-                isInWater = false;
+                _waterCount -= 1;
+                if (_waterCount == 0)
+                {
+                    isInWater = false;
+                }
             }
         }
     }
