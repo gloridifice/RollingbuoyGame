@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 namespace Game.Script
@@ -15,6 +16,7 @@ namespace Game.Script
                 {
                     var obj = new GameObject("Game Manager");
                     _instance = obj.AddComponent<GameManager>();
+                    _instance._audioSource = obj.AddComponent<AudioSource>();
                     DontDestroyOnLoad(_instance);
                 }
                 
@@ -22,11 +24,17 @@ namespace Game.Script
             }
         }
 
+        private AudioSource _audioSource;
         public GameObject pWinUi;
         public bool isGameFinished;
 
         private void Awake()
         {
+            _audioSource.clip = Resources.Load<AudioClip>("Audio/A_Bgm0");
+            _audioSource.loop = true;
+            _audioSource.volume = 0.4f;
+            _audioSource.Play();
+            
             pWinUi = Resources.Load<GameObject>("Prefab/P_WinCanvas");
         }
 
