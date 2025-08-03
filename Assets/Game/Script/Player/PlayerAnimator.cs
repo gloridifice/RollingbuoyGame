@@ -1,36 +1,26 @@
-using Game.Script;
 using UnityEngine;
 
-namespace TarodevController
+namespace Game.Script.Player
 {
     /// <summary>
     /// VERY primitive animator example.
     /// </summary>
     public class PlayerAnimator : MonoBehaviour
     {
-        [Header("References")] [SerializeField]
-        private Animator _anim;
-
-        [SerializeField] private SpriteRenderer _sprite;
-
         [Header("Settings")] [SerializeField, Range(1f, 3f)]
         private float _maxIdleSpeed = 2;
-
-        [SerializeField] private float _maxTilt = 5;
-        [SerializeField] private float _tiltSpeed = 20;
 
         [Header("Particles")] [SerializeField] private ParticleSystem _jumpParticles;
         [SerializeField] private ParticleSystem _launchParticles;
         [SerializeField] private ParticleSystem _moveParticles;
         [SerializeField] private ParticleSystem _landParticles;
 
-        [Header("Audio Clips")] [SerializeField]
-        private AudioClip[] _footsteps;
-
         private AudioSource _source;
         private IPlayerController _player;
         private bool _grounded;
         private ParticleSystem.MinMaxGradient _currentGradient;
+
+        public AudioClip jumpAudio;
 
         private void Awake()
         {
@@ -60,42 +50,25 @@ namespace TarodevController
 
             DetectGroundColor();
 
-            HandleSpriteFlip();
-
             HandleIdleSpeed();
-
-            HandleCharacterTilt();
-        }
-
-        private void HandleSpriteFlip()
-        {
-            if (_player.FrameInput.x != 0) _sprite.flipX = _player.FrameInput.x < 0;
         }
 
         private void HandleIdleSpeed()
         {
             var inputStrength = Mathf.Abs(_player.FrameInput.x);
-            _anim.SetFloat(IdleSpeedKey, Mathf.Lerp(1, _maxIdleSpeed, inputStrength));
             _moveParticles.transform.localScale = Vector3.MoveTowards(_moveParticles.transform.localScale, Vector3.one * inputStrength, 2 * Time.deltaTime);
-        }
-
-        private void HandleCharacterTilt()
-        {
-            var runningTilt = _grounded ? Quaternion.Euler(0, 0, _maxTilt * _player.FrameInput.x) : Quaternion.identity;
-            _anim.transform.up = Vector3.RotateTowards(_anim.transform.up, runningTilt * Vector2.up, _tiltSpeed * Time.deltaTime, 0f);
         }
 
         private void OnJumped()
         {
-            _anim.SetTrigger(JumpKey);
-            _anim.ResetTrigger(GroundedKey);
-
-
             if (_grounded) // Avoid coyote
             {
                 SetColor(_jumpParticles);
                 SetColor(_launchParticles);
                 _jumpParticles.Play();
+                
+                _source.clip = jumpAudio;
+                _source.Play();
             }
         }
 
@@ -108,8 +81,6 @@ namespace TarodevController
                 DetectGroundColor();
                 SetColor(_landParticles);
 
-                _anim.SetTrigger(GroundedKey);
-                _source.PlayOneShot(_footsteps[Random.Range(0, _footsteps.Length)]);
                 _moveParticles.Play();
 
                 _landParticles.transform.localScale = Vector3.one * Mathf.InverseLerp(0, 40, impact);

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8068164802034103907}
   - component: {fileID: 5609907753190987621}
+  - component: {fileID: 2080198455828242808}
   m_Layer: 0
   m_Name: AllVisual
   m_TagString: Untagged
@@ -132,6 +133,24 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2080198455828242808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181474938797098872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb09df9db553ffc4ab6600e3070de9eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxIdleSpeed: 2
+  _jumpParticles: {fileID: 8652599373974966598}
+  _launchParticles: {fileID: 3582291219337030693}
+  _moveParticles: {fileID: 4910415226558260712}
+  _landParticles: {fileID: 2270042259869328520}
+  jumpAudio: {fileID: 8300000, guid: a43469f32ba60934ca3a76df0abda1b6, type: 3}
 --- !u!1 &1714452311506148365
 GameObject:
   m_ObjectHideFlags: 0
@@ -20193,7 +20212,7 @@ Transform:
   m_GameObject: {fileID: 4878293075551441633}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 1.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -29975,7 +29994,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8324619918034642047
 Transform:
   m_ObjectHideFlags: 0
@@ -35338,6 +35357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stats: {fileID: 11400000, guid: 05e6a06c5af93134ab98ff12e2c27265, type: 2}
+  enableInput: 1
   groundRaycastOrigin: {fileID: 0}
   ceilRaycastOrigin: {fileID: 0}
 --- !u!50 &4743180643305668012
@@ -35395,4 +35415,5 @@ MonoBehaviour:
   inAirDamping: 1
   activeCapsuleCollider2D: []
   outerCatchableItem: {fileID: 0}
+  standSitDuration: 0.3
   isInWater: 0
