@@ -1,6 +1,7 @@
 using System;
 using TarodevController;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Game.Script
 {
@@ -15,7 +16,7 @@ namespace Game.Script
     public class PlayerController : MonoBehaviour, IPlayerController
     {
         [SerializeField] private ScriptableStats _stats;
-        private Rigidbody2D _rb;
+        public Rigidbody2D rb;
         private RingController _rc;
         private FrameInput _frameInput;
         private Vector2 _frameVelocity;
@@ -42,11 +43,11 @@ namespace Game.Script
         {
             var a = GameManager.Instance; // Init GameManager
             
-            _rb = GetComponent<Rigidbody2D>();
+            rb = GetComponent<Rigidbody2D>();
             _rc = GetComponent<RingController>();
 
             _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
-            _defaultMass = _rb.mass;
+            _defaultMass = rb.mass;
         }
 
         private void Update()
@@ -90,7 +91,7 @@ namespace Game.Script
         {
             CheckCollisions();
 
-            _massFactor = Mathf.Max(0f, (_rc.massThatCannotMove - _rb.mass) / (_rc.massThatCannotMove - _defaultMass));
+            _massFactor = Mathf.Max(0f, (_rc.massThatCannotMove - rb.mass) / (_rc.massThatCannotMove - _defaultMass));
 
             if (_rc.ringMode == RingMode.Stand)
             {
@@ -185,7 +186,7 @@ namespace Game.Script
 
         private void HandleJump()
         {
-            if (!_endedJumpEarly && !_grounded && !_frameInput.JumpHeld && _rb.linearVelocity.y > 0)
+            if (!_endedJumpEarly && !_grounded && !_frameInput.JumpHeld && rb.linearVelocity.y > 0)
                 _endedJumpEarly = true;
 
             if (!_jumpToConsume && !HasBufferedJump) return;
@@ -240,7 +241,7 @@ namespace Game.Script
 
                 if (_rc.isInWater)
                 {
-                    var massFactor = Mathf.Clamp(-(_rc.massThatCanSinkInWater - _rb.mass) /
+                    var massFactor = Mathf.Clamp(-(_rc.massThatCanSinkInWater - rb.mass) /
                                                  (_rc.massThatCanSinkInWater - _defaultMass), -1f, 1f);
 
                     verticalAcc *= massFactor;
@@ -266,7 +267,7 @@ namespace Game.Script
 
         #endregion
 
-        private void ApplyMovement() => _rb.linearVelocity = _frameVelocity;
+        private void ApplyMovement() => rb.linearVelocity = _frameVelocity;
 
 #if UNITY_EDITOR
         private void OnValidate()

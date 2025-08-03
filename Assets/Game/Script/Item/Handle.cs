@@ -12,6 +12,7 @@ namespace Game.Script
 
         public bool toggled = false;
         public float openHandleImpulse = 200f;
+        public float massRequirement = 0f;
 
         public UnityEvent onToggled = new();
         public UnityEvent onToggledLeft = new();
@@ -56,8 +57,11 @@ namespace Game.Script
         {
             if (other.gameObject.TryGetComponent(out PlayerController player))
             {
-                foreach (var pnt in other.contacts)
-                    _accumulatedImpulse += pnt.normal * pnt.normalImpulse;
+                if (player.rb.mass > massRequirement)
+                {
+                    foreach (var pnt in other.contacts)
+                        _accumulatedImpulse += pnt.normal * pnt.normalImpulse;
+                }
             }
         }
 
