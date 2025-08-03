@@ -14,6 +14,8 @@ namespace Game.Script
         public float openHandleImpulse = 200f;
 
         public UnityEvent onToggled = new();
+        public UnityEvent onToggledLeft = new();
+        public UnityEvent onToggledRight = new();
 
         [Header("Animation")] 
         
@@ -22,20 +24,28 @@ namespace Game.Script
 
         private void FixedUpdate()
         {
-            if (!toggled && _accumulatedImpulse.x > openHandleImpulse)
+            if (!toggled && Mathf.Abs(_accumulatedImpulse.x) > openHandleImpulse)
             {
-                Toggle(true);
+                Toggle(true, _accumulatedImpulse.x > 0f);
             }
         }
 
-        void Toggle(bool toggle)
+        void Toggle(bool toggle, bool isLeft)
         {
             if (toggled == toggle) return;
 
-            var twn = transform.DORotate(new Vector3(0f, 0f, -60f), duration).SetEase(ease);
+            float deg = 60f;
+            if (isLeft) deg = -60f;
+            
+            var twn = transform.DORotate(new Vector3(0f, 0f, deg), duration).SetEase(ease);
+            
             twn.OnComplete(() =>
             {
                 onToggled.Invoke();
+                if (isLeft)
+                    onToggledLeft.Invoke();
+                else 
+                    onToggledRight.Invoke();
             });
             
             toggled = toggle;

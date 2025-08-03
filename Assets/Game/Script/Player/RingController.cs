@@ -173,6 +173,10 @@ namespace Game.Script
 
             catchableItem.transform.SetParent(null);
             catchableItem.transform.position += Vector3.up * 0.3f;
+            var rot = catchableItem.transform.rotation.eulerAngles;
+            rot.x = 0f;
+            rot.y = 0f;
+            catchableItem.transform.rotation = Quaternion.Euler(rot);
             catchableItem = null;
         }
 
@@ -251,7 +255,6 @@ namespace Game.Script
             if (other.gameObject.TryGetComponent(out WaterArea water))
             {
                 isInWater = true;
-                Debug.Log("Enter water!");
             }
         }
 
@@ -260,7 +263,6 @@ namespace Game.Script
             if (other.gameObject.TryGetComponent(out WaterArea water))
             {
                 isInWater = false;
-                Debug.Log("Exit water!");
             }
         }
     }

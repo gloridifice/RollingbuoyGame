@@ -6,18 +6,24 @@ namespace Game.Script
 {
     public class GameManager : MonoBehaviour
     {
-        public static GameManager Instance;
+        private static GameManager _instance;
+        public static GameManager Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    var obj = new GameObject();
+                    _instance = obj.AddComponent<GameManager>();
+                    DontDestroyOnLoad(_instance);
+                }
+                
+                return _instance;
+            }
+        }
 
         public GameObject pWinUi;
         public bool isGameFinished;
-
-        private void Awake()
-        {
-            if (Instance == null)
-                Instance = this;
-            
-            DontDestroyOnLoad(Instance);
-        }
 
         private void Update()
         {

@@ -35382,15 +35382,15 @@ MonoBehaviour:
   ringMode: 0
   visual: {fileID: 6018657150596143799}
   model: {fileID: 4987772542233525503}
-  sitCollision: {fileID: 3742341937668384096}
-  standCollision: {fileID: 7225884431781692011}
+  sitCollisionObject: {fileID: 3742341937668384096}
+  standCollisionObject: {fileID: 7225884431781692011}
   itemCollision: {fileID: 4130087315198583711}
   innerCatcherArea: {fileID: 3516405917638991437}
   outerCatcherArea: {fileID: 3148160413203505761}
   catchPointMarker: {fileID: 4143025972892794571}
   catchableItem: {fileID: 0}
-  massThatCanSinkInWater: 10
-  massThatCannotMove: 20
+  massThatCanSinkInWater: 40
+  massThatCannotMove: 100
   inWaterDamping: 5
   inAirDamping: 1
   activeCapsuleCollider2D: []
