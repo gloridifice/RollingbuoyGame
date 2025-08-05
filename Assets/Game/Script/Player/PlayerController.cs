@@ -26,9 +26,6 @@ namespace Game.Script
 
         public bool enableInput = true;
 
-        public Transform groundRaycastOrigin;
-        public Transform ceilRaycastOrigin;
-
         #region Interface
 
         public Vector2 FrameInput => _frameInput.Move;
