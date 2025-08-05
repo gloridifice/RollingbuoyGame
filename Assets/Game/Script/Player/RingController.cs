@@ -125,6 +125,8 @@ namespace Game.Script
             }
         }
 
+        #region Catch & Put Items
+
         void CatchOuterItem(Catchable catchable)
         {
             if (catchable is OuterCatchable outerCatchable)
@@ -212,7 +214,11 @@ namespace Game.Script
             catchableItem = null;
         }
 
-        #region Ring Mode
+        #endregion
+
+
+
+        #region Ring Mode - Stand / Sit
 
         void ChangeRingMode()
         {
@@ -225,8 +231,20 @@ namespace Game.Script
             }
         }
 
+        bool CanStand()
+        {
+            return innerCatcherArea.GetCatchableObject() == null;
+        }
+        
+        bool CanSit()
+        {
+            return true;
+        }
+
         bool TryStand()
         {
+            if (!CanStand()) return false;
+                
             ringMode = RingMode.Stand;
 
             var tween = visual.transform.DOLocalRotate(new Vector3(90f, 0f, 0f), standSitDuration);
@@ -263,6 +281,8 @@ namespace Game.Script
 
         bool TrySit()
         {
+            if (!CanSit()) return false;
+            
             ringMode = RingMode.Sit;
 
             var tween = visual.transform.DOLocalRotate(new Vector3(0f, 0f, 0f), standSitDuration)
