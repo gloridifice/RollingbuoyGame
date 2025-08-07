@@ -13,7 +13,7 @@ The game revolves around the nesting of rings:
 
 ### [Try this game on itch.io](https://gloridifice.itch.io/rollingbuoy)
 
-External assets used:
+### External assets used
 - Free Stylized
   - https://freestylized.com/
 - Kenney
@@ -21,5 +21,7 @@ External assets used:
   - https://kenney.nl/assets/platformer-kit
   - https://kenney.nl/assets/input-prompts
   - https://kenney.nl/assets/fantasy-ui-borders
+- 2D Platformer Controller
+  - https://github.com/Matthew-J-Spencer/Ultimate-2D-Controller
 
 ![Rollingbuoy cover](README/Cover.jpg)
